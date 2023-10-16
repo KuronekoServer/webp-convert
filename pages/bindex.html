@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter</title>
+    <!-- Bootstrap CSS CDN -->
+    <link id="theme-link" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Image Converter</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <label class="custom-switch">
+                    <input type="checkbox" class="custom-switch-input" id="theme-switch">
+                    <span class="custom-switch-indicator"></span>
+                    <span class="custom-switch-description">Dark Mode</span>
+                </label>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                Upload Images
+            </div>
+            <div class="card-body">
+                <form id="uploadForm" action="/convert" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="images">Select Images</label>
+                        <input type="file" class="form-control-file" name="images" id="images" accept="image/*" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Convert to WebP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const themeSwitch = document.getElementById('theme-switch');
+        const themeLink = document.getElementById('theme-link');
+
+        themeSwitch.addEventListener('change', () => {
+            if (themeSwitch.checked) {
+                themeLink.setAttribute('href', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.dark.min.css');
+            } else {
+                themeLink.setAttribute('href', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+            }
+        });
+    </script>
+</body>
+</html>
