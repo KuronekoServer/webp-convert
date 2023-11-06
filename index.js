@@ -40,9 +40,9 @@ app.post('/convert', upload.array('images'), async (req, res) => {
         req.files.map(async (file, index) => {
           const inputBuffer = file.buffer;
           const outputBuffer = await sharp(inputBuffer).toFormat('webp').toBuffer();
-          const outputFilePath = path.join(outputDirectory, `image_${index}.webp`);
+          const outputFilePath = path.join(outputDirectory, `${index}.webp`);
           fs.writeFileSync(outputFilePath, outputBuffer);
-          convertedImages.push({ name: `image_${index}.webp`, path: outputFilePath });
+          convertedImages.push({ name: `${index}.webp`, path: outputFilePath });
         })
       );
     }

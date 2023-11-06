@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Converter</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Light and Dark Theme CSS -->
-    <link id="theme-link" rel="stylesheet" href="light-theme.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,15 +19,16 @@
                 画像をアップロード
             </div>
             <div class="card-body">
-                <form id="uploadForm" action="/convert" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="images">画像を選択</label>
-                        <input type="file" class="form-control-file" name="images" id="images" accept=".png, .jpg" multiple required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">WebPに変換する</button>
-		    <p>※変換後zipでダウンロードが開始されます</p>
-                </form>
+                <div class="form-group">
+                    <label for="images">画像を選択</label>
+                    <input type="file" class="form-control-file" name="images" id="images" accept=".png, .jpg" multiple required>
+                </div>
+                <button id="uploadSubmit" class="btn btn-primary" onclick="onsend()">WebPに変換する</button>
+                <p>※変換後zipでダウンロードが開始されます</p>
             </div>
+        </div>
+        <div id="imageList">
+
         </div>
     </div>
 
