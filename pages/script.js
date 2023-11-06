@@ -10,18 +10,23 @@ const onsend = async () => {
 
     document.getElementById('images').disabled = true;
     document.getElementById("uploadSubmit").disabled = true;
-    document.getElementById("uploadSubmit").textContent = "変換中....";
+    document.getElementById("uploadSubmit").textContent = "変換中.... 0/" + images.length;
+
+    const zip = new JSZip().folder("images");
 
     const batchFormData = new FormData()
     for (let j = 0; j < images.length; j++) {
         const file = images[j];
-        batchFormData.append('images', file);
+        const response = await fetch('/convert', {
+            method: 'POST',
+            body: file,
+        });
+        zip.file(file.name, await response.arrayBuffer(), { binary: true })
+
+        document.getElementById("uploadSubmit").textContent = "変換中.... " + (j + 1) + "/" + images.length;
     }
 
-    const response = await fetch('/convert', {
-        method: 'POST',
-        body: batchFormData,
-    });
+
 
     if (response.ok) {
         const link = document.createElement('a');
@@ -30,7 +35,7 @@ const onsend = async () => {
         } else {
             link.download = "converted.webp"
         }
-        link.href = URL.createObjectURL(await response.blob());
+        link.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
         link.click();
         URL.revokeObjectURL(link.href)
     } else {
