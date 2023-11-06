@@ -90,6 +90,9 @@ app.post('/convert', upload.array('images'), async (req, res) => {
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/pages/index.html")
 });
+app.get("/script.js", (req, res) => {
+  res.sendFile(__dirname + "/pages/script.js")
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
