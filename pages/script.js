@@ -14,12 +14,14 @@ const onsend = async () => {
 
     const zip = new JSZip().folder("images");
 
-    const batchFormData = new FormData()
+
     for (let j = 0; j < images.length; j++) {
         const file = images[j];
+        const batchFormData = new FormData()
+        batchFormData.append("images", file)
         const response = await fetch('/convert', {
             method: 'POST',
-            body: file,
+            body: batchFormData,
         });
         zip.file(file.name, await response.arrayBuffer(), { binary: true })
 
