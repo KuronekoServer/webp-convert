@@ -38,6 +38,7 @@ const onsend = async () => {
         link.download = "converted.zip"
     } else {
         link.download = "converted.webp"
+        document.getElementById("uploadSubmit").textContent = "圧縮中.... ";
     }
     link.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
     link.click();
