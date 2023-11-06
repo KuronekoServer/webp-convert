@@ -23,26 +23,26 @@ const onsend = async () => {
             method: 'POST',
             body: batchFormData,
         });
+        if (!response.ok) {
+            alert('An error occurred during conversion.');
+            return
+        }
         zip.file(file.name, await response.arrayBuffer(), { binary: true })
 
         document.getElementById("uploadSubmit").textContent = "変換中.... " + (j + 1) + "/" + images.length;
     }
 
 
-
-    if (response.ok) {
-        const link = document.createElement('a');
-        if (images.length >= 2) {
-            link.download = "converted.zip"
-        } else {
-            link.download = "converted.webp"
-        }
-        link.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
-        link.click();
-        URL.revokeObjectURL(link.href)
+    const link = document.createElement('a');
+    if (images.length >= 2) {
+        link.download = "converted.zip"
     } else {
-        alert('An error occurred during conversion.');
+        link.download = "converted.webp"
     }
+    link.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
+    link.click();
+    URL.revokeObjectURL(link.href)
+
     document.getElementById('images').disabled = false;
     document.getElementById("uploadSubmit").disabled = false;
     document.getElementById("uploadSubmit").textContent = "WebPに変換する";
