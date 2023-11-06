@@ -27,9 +27,27 @@ const onsend = async () => {
             alert('An error occurred during conversion.');
             return
         }
-        zip.file(file.name, await response.arrayBuffer(), { binary: true })
 
-        document.getElementById("uploadSubmit").textContent = "変換中.... " + (j + 1) + "/" + images.length;
+        if (images.length >= 2) {
+            zip.file((j + 1) + ".webp", await response.arrayBuffer(), { binary: true })
+
+            document.getElementById("uploadSubmit").textContent = "変換中.... " + (j + 1) + "/" + images.length;
+        } else {
+            document.getElementById("uploadSubmit").textContent = "変換中.... " + (j + 1) + "/" + images.length;
+
+            const link = document.createElement('a');
+            link.download = "converted.webp"
+            link.href = URL.createObjectURL(await response.blob());
+            link.click();
+            URL.revokeObjectURL(link.href)
+
+            document.getElementById('images').disabled = false;
+            document.getElementById("uploadSubmit").disabled = false;
+            document.getElementById("uploadSubmit").textContent = "WebPに変換する";
+            return
+        }
+
+
     }
 
 
