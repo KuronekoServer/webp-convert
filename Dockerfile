@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 12901
 
 # アプリケーションの起動コマンドを指定
-CMD [ "node", "app.js" ]
+CMD [ "node", "index.js" ]
