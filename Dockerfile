@@ -1,5 +1,5 @@
 # ベースイメージを指定
-FROM node:latest
+FROM node:lts
 
 # コンテナ内の作業ディレクトリを設定
 WORKDIR /app
