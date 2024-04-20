@@ -20,6 +20,7 @@ const upload = multer({ storage: storage });
 
 // ルートエンドポイント
 app.post('/api/convert', upload.array('images'), async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).send('No images uploaded.');
