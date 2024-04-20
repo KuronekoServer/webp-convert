@@ -19,7 +19,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // ルートエンドポイント
-app.post('/convert', upload.array('images'), async (req, res) => {
+app.post('/api/convert', upload.array('images'), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).send('No images uploaded.');
