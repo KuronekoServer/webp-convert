@@ -8,6 +8,8 @@ const AdmZip = require('adm-zip');
 const app = express();
 const port = 12901;
 
+let ApiRateCount = 0;
+
 // 保存先のディレクトリを作成
 const outputDirectory = path.join(__dirname, 'output');
 const zipDirectory = path.join(__dirname, 'zip');
@@ -20,6 +22,7 @@ const upload = multer({ storage: storage });
 
 // ルートエンドポイント
 app.post('/api/convert', upload.array('images'), async (req, res) => {
+    ApiRateCount++; // APIへのアクセス数をカウント
     res.setHeader('Access-Control-Allow-Origin', '*');
     try {
         if (!req.files || req.files.length === 0) {
@@ -71,6 +74,13 @@ app.post('/api/convert', upload.array('images'), async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+// メトリクスエンドポイント
+app.get('/metrics', async (req, res) => {
+    let metrics = `Webp_ApiRateCount ${ApiRateCount}`;
+    res.set('Content-Type', 'text/plain');
+    res.send(metrics);
+  });
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
