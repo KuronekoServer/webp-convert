@@ -75,6 +75,11 @@ app.post('/api/convert', upload.array('images'), async (req, res) => {
     }
 });
 
+app.get('/health', (req, res) => {
+    res.set('Content-Type', 'text/plain');
+    res.send('OK');
+  });
+
 // メトリクスエンドポイント
 app.get('/metrics', async (req, res) => {
     let metrics = `Webp_ApiRateCount ${ApiRateCount}`;
