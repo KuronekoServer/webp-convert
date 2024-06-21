@@ -29,21 +29,23 @@ app.post('/api/convert', upload.array('images'), async (req, res) => {
             return res.status(400).send('No images uploaded.');
         }
 
+        const toFormat = req.query.toFormat || 'webp';
+
         const convertedImages = [];
 
         // ファイルが1つの場合
         if (req.files.length === 1) {
             const inputBuffer = req.files[0].buffer;
-            const outputBuffer = await sharp(inputBuffer).toFormat('webp').toBuffer();
-            res.type("webp")
-            res.send(outputBuffer)
-            return
+            const outputBuffer = await sharp(inputBuffer).toFormat(toFormat).toBuffer();
+            res.type(toFormat);
+            res.send(outputBuffer);
+            return;
         } else {
             // ファイルが複数の場合
             await Promise.all(
                 req.files.map(async (file, index) => {
                     const inputBuffer = file.buffer;
-                    const outputBuffer = await sharp(inputBuffer).toFormat('webp').toBuffer();
+                    const outputBuffer = await sharp(inputBuffer).toFormat(toFormat).toBuffer();
                     convertedImages.push(outputBuffer);
                 })
             );
@@ -52,22 +54,11 @@ app.post('/api/convert', upload.array('images'), async (req, res) => {
         if (req.files.length > 1) {
             const zip = new AdmZip();
             convertedImages.forEach((image, index) => {
-                zip.addFile(`${index + 1}.webp`, image);
+                zip.addFile(`${index + 1}.${toFormat}`, image);
             });
 
             const zipFilePath = path.join(zipDirectory, 'converted_images.zip');
-            res.send(await zip.toBufferPromise())
-        } else {
-            // ファイルが1つの場合は直接ファイルをダウンロード
-            res.download(convertedImages[0].path, 'image.webp', (err) => {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send('Internal Server Error');
-                }
-
-                // ファイルを削除
-                fs.unlinkSync(convertedImages[0].path);
-            });
+            res.send(await zip.toBufferPromise());
         }
     } catch (error) {
         console.error(error);
@@ -78,14 +69,14 @@ app.post('/api/convert', upload.array('images'), async (req, res) => {
 app.get('/health', (req, res) => {
     res.set('Content-Type', 'text/plain');
     res.send('OK');
-  });
+});
 
 // メトリクスエンドポイント
 app.get('/metrics', async (req, res) => {
-    let metrics = `Webp_ApiRateCount ${ApiRateCount}`;
+    let metrics = `ApiRateCount ${ApiRateCount}`;
     res.set('Content-Type', 'text/plain');
     res.send(metrics);
-  });
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
