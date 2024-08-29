@@ -6,7 +6,7 @@ on:
       - 'master'
 
 env:
-  REGISTRY: contabo-reg.kuroneko6423.com
+  REGISTRY: krnk.cri.jp
   IMAGE_NAME: webp-convert
 
 jobs:
