@@ -6,7 +6,7 @@ on:
       - 'master'
 
 env:
-  REGISTRY: krnk.cri.jp
+  REGISTRY: dock-sk.krnk.org
   IMAGE_NAME: webp-convert
 
 jobs:
